@@ -32,6 +32,8 @@ HF_HUB_OFFLINE=1 HF_DATASETS_OFFLINE=1 uv run --offline --locked jupyter lab
 
 A first installation still needs access to the Python package index (or an already populated uv cache). `uv --offline` uses cached packages; it cannot download missing ones.
 
+Installation and data preparation use the operating system's trusted certificates. The uv project enables `system-certs`, and the preparation CLI initializes Python's `truststore` before loading its HTTP clients. This supports managed networks whose proxy CA is already trusted in macOS Keychain, without disabling certificate or hostname verification. A proxy CA must be installed and trusted through your organization's normal device configuration; an untrusted certificate will still fail. No certificate environment-variable workaround is needed.
+
 Weights & Biases logging is disabled by default in the training arguments. The kernel also defaults W&B to offline mode. No API key is needed for the core exercises. Training at the original notebook sizes may take time; start with smaller batches and fewer epochs if needed. MPS fallback is enabled before importing PyTorch for operators that need CPU implementations. See [PyTorch's MPS environment documentation](https://docs.pytorch.org/docs/stable/mps_environment_variables.html).
 
 ## Optional sections

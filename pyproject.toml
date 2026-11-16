@@ -28,6 +28,7 @@ dependencies = [
     "jupyterlab>=4,<5",
     "ipykernel>=6.29,<8",
     "threadpoolctl>=3.5,<4",
+    "truststore>=0.10.4,<0.11",
 ]
 
 [dependency-groups]
@@ -35,6 +36,8 @@ dev = ["pytest>=8,<10", "nbclient>=0.10,<0.11", "nbformat>=5.10,<6", "pyyaml>=6,
 
 [tool.uv]
 package = false
+# Use the Mac's trusted roots for Python and package downloads as well.
+system-certs = true
 # The remaining chapters still use requirements.txt. This project targets native Macs.
 environments = ["sys_platform == 'darwin'"]
 

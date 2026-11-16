@@ -24,6 +24,13 @@ def main():
     parser.add_argument("--fid", action="store_true")
     args = parser.parse_args()
 
+    # This CLI owns the process: configure TLS before importing download clients,
+    # which can cache SSLContext. Use OS trust (including managed proxy roots)
+    # while retaining certificate and hostname verification for every download.
+    import truststore
+
+    truststore.inject_into_ssl()
+
     from datasets import load_dataset, load_from_disk
     from torchvision import datasets, models
 
