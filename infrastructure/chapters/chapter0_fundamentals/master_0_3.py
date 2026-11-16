@@ -116,58 +116,43 @@ ipython.run_line_magic("autoreload", "2")
 # ! FILTERS: [colab]
 # ! TAGS: [master-comment]
 
+# # Native local setup: run `uv sync --locked` once from the repository root.
+# # Select the "ARENA chapter 0 (uv)" kernel; this cell never installs or downloads.
 # import os
 # import sys
 # from pathlib import Path
-
-# IN_COLAB = "google.colab" in sys.modules
-
+#
+# os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+# os.environ.setdefault("WANDB_MODE", "offline")
 # chapter = "chapter0_fundamentals"
-# repo = "ARENA_materials"
-# branch = "main"
-
-# # Install dependencies
-# try:
-#     import jaxtyping
-# except:
-#     %pip install einops jaxtyping torchinfo wandb datasets
-
-# # Get root directory, handling 3 different cases: (1) Colab, (2) notebook not in ARENA repo, (3) notebook in ARENA repo
-# root = (
-#     "/content"
-#     if IN_COLAB
-#     else "/root"
-#     if repo not in os.getcwd()
-#     else str(next(p for p in Path.cwd().parents if p.name == repo))
+# root_dir = next(
+#     (p for p in (Path.cwd(), *Path.cwd().parents) if (p / chapter / "exercises").is_dir()),
+#     None,
 # )
-
-# if Path(root).exists() and not Path(f"{root}/{chapter}").exists():
-#     if not IN_COLAB:
-#         !sudo apt-get install unzip
-#         %pip install jupyter ipython --upgrade
-
-#     if not os.path.exists(f"{root}/{chapter}"):
-#         !wget -P {root} https://github.com/ARENA-education/ARENA_materials/archive/refs/heads/{branch}.zip
-#         !unzip {root}/{branch}.zip '{repo}-{branch}/{chapter}/exercises/*' -d {root}
-#         !mv {root}/{repo}-{branch}/{chapter} {root}/{chapter}
-#         !rm {root}/{branch}.zip
-#         !rmdir {root}/{repo}-{branch}
-
-
-# assert Path(f"{root}/{chapter}/exercises").exists(), (
-#     "Unexpected error: please manually clone ARENA repo into `root`"
-# )
-
-# if f"{root}/{chapter}/exercises" not in sys.path:
-#     sys.path.append(f"{root}/{chapter}/exercises")
-
-# os.chdir(f"{root}/{chapter}/exercises")
+# if root_dir is None:
+#     raise RuntimeError(
+#         "Open this notebook inside the cloned ARENA repository. See chapter0_fundamentals/README.md."
+#     )
+# exercises_dir = root_dir / chapter / "exercises"
+# os.environ.setdefault("HF_HOME", str(exercises_dir / "data/huggingface"))
+# os.environ.setdefault("TORCH_HOME", str(exercises_dir / "data/torch"))
+# if str(exercises_dir) not in sys.path:
+#     sys.path.insert(0, str(exercises_dir))
+# os.chdir(exercises_dir)
+#
+# # Include Plotly's JavaScript locally; figures also work without a CDN connection.
+# import plotly.io as pio
+#
+# pio.renderers.default = "plotly_mimetype+notebook"
 
 # ! CELL TYPE: code
 # ! FILTERS: []
 # ! TAGS: []
 
 import os
+
+os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+
 import sys
 import time
 from dataclasses import dataclass
@@ -190,7 +175,8 @@ from tqdm.auto import tqdm
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part3_optimization"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -208,6 +194,10 @@ from plotly_utils import bar, imshow, line
 # Cap the number of CPU threads PyTorch uses. On machines with many cores the default of one
 # thread per core makes small CPU tensor operations much slower
 t.set_num_threads(min(4, t.get_num_threads()))
+
+# Optional services and multi-GPU exercises are opt-in on a local Mac.
+RUN_WANDB_SWEEPS = os.environ.get("ARENA_RUN_WANDB_SWEEPS") == "1"
+RUN_DISTRIBUTED = os.environ.get("ARENA_RUN_DISTRIBUTED") == "1" and t.cuda.device_count() >= 2
 
 device = t.device("mps" if t.backends.mps.is_available() else "cuda" if t.cuda.is_available() else "cpu")
 t.backends.cudnn.benchmark = True  # pick the fastest conv algorithms for our fixed batch shapes (the ResNet fine-tunes)
@@ -1757,7 +1747,7 @@ r'''
 Training: 100%|██████████| 391/391 [00:24<00:00, 16.02it/s, ex_seen=050000, loss=0.614]
 Evaluating: 100%|██████████| 79/79 [00:02<00:00, 26.67it/s]
 Training: 100%|██████████| 391/391 [00:22<00:00, 17.11it/s, ex_seen=100000, loss=0.464]
-Evaluating: 100%|██████████| 79/79 [00:02<00:00, 28.98it/s]</pre><div style="text-align: left"><embed src="https://info-arena.github.io/ARENA_img/misc/media-03/0306-v2.html" width="820" height="480"></div>
+Evaluating: 100%|██████████| 79/79 [00:02<00:00, 28.98it/s]</pre><div style="text-align: left"><embed src="https://info-arena.github.io/ARENA_img/misc/media-03/0306.html" width="820" height="480"></div>
 '''
 
 # ! CELL TYPE: markdown
@@ -2027,7 +2017,7 @@ class WandbResNetFinetuner(ResNetFinetuner):
 # ! FILTERS: [ex,st]
 # ! TAGS: [master-comment]
 
-# Train with your wandb version (exercises notebook only: in the solutions this would repeat the fine-tune above)
+# # Train with your wandb version (exercises notebook only: in the solutions this would repeat the fine-tune above)
 # args = WandbResNetFinetuningArgs(use_wandb=False)
 # trainer = WandbResNetFinetuner(args)
 # trainer.train()
@@ -2366,9 +2356,10 @@ def train():
 
 
 if MAIN:
-    sweep_id = wandb.sweep(sweep=sweep_config, project="day3-resnet-sweep")
-    wandb.agent(sweep_id=sweep_id, function=train, count=3)
-    wandb.finish()
+    if RUN_WANDB_SWEEPS:
+        sweep_id = wandb.sweep(sweep=sweep_config, project="day3-resnet-sweep")
+        wandb.agent(sweep_id=sweep_id, function=train, count=3)
+        wandb.finish()
 
 # ! CELL TYPE: markdown
 # ! FILTERS: []
@@ -2464,8 +2455,9 @@ In either case, make sure when you run `mp.spawn` you're passing in the most upd
 # ! TAGS: []
 
 if MAIN:
-    IN_COLAB = "google.colab" in sys.modules
-    assert not IN_COLAB, "Should be doing these exercises in VS Code"
+    if RUN_DISTRIBUTED:
+        IN_COLAB = "google.colab" in sys.modules
+        assert not IN_COLAB, "Should be doing these exercises in VS Code"
 
 # ! CELL TYPE: markdown
 # ! FILTERS: []
@@ -2496,8 +2488,8 @@ The functions `dist.send` and `dist.recv` are the basic primitives for point-to-
 
 WORLD_SIZE = min(t.cuda.device_count(), 3)
 
-os.environ["MASTER_ADDR"] = "localhost"
-os.environ["MASTER_PORT"] = "12345"
+os.environ.setdefault("MASTER_ADDR", "localhost")
+os.environ.setdefault("MASTER_PORT", "12345")
 
 
 def send_receive(rank, world_size):
@@ -2519,13 +2511,14 @@ def send_receive(rank, world_size):
 
 
 if MAIN:
-    world_size = 2  # simulate 2 processes
-    mp.spawn(
-        send_receive,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2  # simulate 2 processes
+        mp.spawn(
+            send_receive,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # FILTERS: ~
 # import part3_optimization.dist_training as dist_training
@@ -2557,8 +2550,9 @@ Now, let's adapt this toy example to work with our multiple GPUs! You can check 
 # ! FILTERS: []
 # ! TAGS: [main]
 
-assert t.cuda.is_available()
-assert t.cuda.device_count() > 1, "This example requires at least 2 GPUs per machine"
+if RUN_DISTRIBUTED:
+    assert t.cuda.is_available()
+    assert t.cuda.device_count() > 1, "This example requires at least 2 GPUs per machine"
 
 # ! CELL TYPE: markdown
 # ! FILTERS: []
@@ -2607,13 +2601,14 @@ def send_receive_nccl(rank, world_size):
 
 
 if MAIN:
-    world_size = 2  # simulate 2 processes
-    mp.spawn(
-        send_receive_nccl,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2  # simulate 2 processes
+        mp.spawn(
+            send_receive_nccl,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # FILTERS: ~
 # import part3_optimization.dist_training as dist_training
@@ -2697,7 +2692,8 @@ def broadcast(tensor: Tensor, rank: int, world_size: int, src: int = 0):
 
 # HIDE
 if MAIN:
-    tests.test_broadcast(broadcast, WORLD_SIZE)
+    if RUN_DISTRIBUTED:
+        tests.test_broadcast(broadcast, WORLD_SIZE)
 # END HIDE
 
 # FILTERS: ~
@@ -2780,8 +2776,9 @@ def all_reduce(tensor, rank, world_size, op: Literal["sum", "mean"] = "sum"):
 
 # HIDE
 if MAIN:
-    tests.test_reduce(reduce, WORLD_SIZE)
-    tests.test_all_reduce(all_reduce, WORLD_SIZE)
+    if RUN_DISTRIBUTED:
+        tests.test_reduce(reduce, WORLD_SIZE)
+        tests.test_all_reduce(all_reduce, WORLD_SIZE)
 # END HIDE
 
 
@@ -2859,13 +2856,14 @@ def run_simple_model(rank, world_size):
 
 
 if MAIN:
-    world_size = 2
-    mp.spawn(
-        run_simple_model,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2
+        mp.spawn(
+            run_simple_model,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # FILTERS: ~
 # import part3_optimization.dist_training as dist_training
@@ -3137,13 +3135,14 @@ def dist_train_resnet_from_scratch(rank, world_size):
 
 # HIDE
 if MAIN:
-    world_size = t.cuda.device_count()
-    mp.spawn(
-        dist_train_resnet_from_scratch,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = t.cuda.device_count()
+        mp.spawn(
+            dist_train_resnet_from_scratch,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 # END HIDE
 
 
@@ -3191,13 +3190,14 @@ def run(rank: int, world_size: int):
 
 
 if MAIN:
-    world_size = 2
-    mp.spawn(
-        run,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2
+        mp.spawn(
+            run,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # ! CELL TYPE: markdown
 # ! FILTERS: []
@@ -3281,7 +3281,8 @@ def ring_all_reduce(tensor: Tensor, rank, world_size, op: Literal["sum", "mean"]
 
 # HIDE
 if MAIN:
-    tests.test_all_reduce(ring_all_reduce, WORLD_SIZE)
+    if RUN_DISTRIBUTED:
+        tests.test_all_reduce(ring_all_reduce, WORLD_SIZE)
 # END HIDE
 
 # ! CELL TYPE: markdown

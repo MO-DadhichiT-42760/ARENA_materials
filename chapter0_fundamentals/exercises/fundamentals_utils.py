@@ -4,18 +4,44 @@ Shared helpers for chapter 0 (Fundamentals). Importable from any exercise notebo
 """
 
 import io
+import os
+from pathlib import Path
 from typing import Callable, ClassVar
+
+LOCAL_DATA = Path(__file__).resolve().parent / "data"
+os.environ.setdefault("HF_HOME", str(LOCAL_DATA / "huggingface"))
+os.environ.setdefault("TORCH_HOME", str(LOCAL_DATA / "torch"))
 
 import einops
 import numpy as np
 import torch as t
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 from PIL import Image
 from torch import Tensor
 from torch.utils.data import Dataset
 from torchvision.transforms import v2 as transforms
 
 from plotly_utils import imshow
+
+HF_DATASETS = {
+    "ylecun/mnist": "mnist",
+    "uoft-cs/cifar10": "cifar10",
+    "nielsr/CelebA-faces": "celeba",
+}
+
+
+def load_chapter_dataset(name: str, split: str | None = None):
+    """Prefer the portable snapshot prepared by scripts/prepare_chapter0.py.
+
+    Snapshots load directly from Arrow files, without contacting HuggingFace.
+    The original online path remains available when the snapshot isn't present.
+    """
+    local = LOCAL_DATA / "datasets" / HF_DATASETS[name]
+    if local.is_dir():
+        data = load_from_disk(str(local))
+        return data if split is None else data[split]
+    return load_dataset(name, **({} if split is None else {"split": split}))
+
 
 IMAGE_SIZE = 224
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
@@ -95,7 +121,7 @@ class HFImageDataset(Dataset):
             self.transform = transform  # replaces the class's default preprocessing, for this dataset only
         if not train and not self.has_test_split:
             raise ValueError(f"{type(self).__name__} only has a training split, so `train=False` isn't available.")
-        self.hf_dataset = load_dataset(self.hf_path, split="train" if train else "test")
+        self.hf_dataset = load_chapter_dataset(self.hf_path, split="train" if train else "test")
 
         # Small datasets are decoded once, up front, into a single uint8 array - then assembling a batch is just a
         # numpy gather, costing microseconds. Large ones (CelebA is 200k images of 178x218, i.e. 23 GiB raw) don't fit,

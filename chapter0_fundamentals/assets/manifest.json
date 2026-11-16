@@ -1,0 +1,617 @@
+[
+  {
+    "url": "https://cdn.plot.ly/plotly-2.27.0.min.js",
+    "path": "assets/9c7e5fb81ac0-plotly-2.27.0.min.js",
+    "sha256": "7f4930eba8f8541dbec28dca5bd5f787f8eef1cde0369ac9657b70bed230b3e0"
+  },
+  {
+    "url": "https://cdn.plot.ly/plotly-2.35.2.min.js",
+    "path": "assets/32691e11f08a-plotly-2.35.2.min.js",
+    "sha256": "6d21266ce1bd7d9e5ab4e115989c70c20de0382fd973a8f26ab58619eba4d603"
+  },
+  {
+    "url": "https://distill.pub/2020/circuits/zoom-in/images/curves.png",
+    "path": "assets/3956533fdd74-curves.png",
+    "sha256": "673628bc9155741fc1debd92651c8a65948ca3d58398346000f8c17e296d4093"
+  },
+  {
+    "url": "https://github.com/callummcdougall/Fundamentals/blob/main/images/abcdefg.png?raw=true",
+    "path": "assets/99cc102c0ba1-abcdefg.png",
+    "sha256": "4a9bdb3e2546e4dc3906cf5e4aeb5cab270bd218a4bf6fe3ee887333df3b7d4b"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/demo1.html",
+    "path": "assets/efdaf8696309-demo1.html",
+    "sha256": "5bcd80b395a1f9bc7177edf2286021a6668ab961c9683d20d8c06f6502824ad4"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/demo2.html",
+    "path": "assets/f17c5fb8daaf-demo2.html",
+    "sha256": "28d98dc6b75fca13688698894d4e4e4bee043b18fefea2995514ce3647904d13"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/demo3.html",
+    "path": "assets/fd7ccc07b5b2-demo3.html",
+    "sha256": "59403e42361e9c9bdffca1fe3e14972fe11bae88abacb674494099dfcd79531a"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex1.html",
+    "path": "assets/ba6fc1be2131-ex1.html",
+    "sha256": "db5b2ba98ecb22af38eaaf27d88223a346cfb22665481699ae29c190af65f92b"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex2.html",
+    "path": "assets/d3e4dc145d84-ex2.html",
+    "sha256": "f5b3885f69966a4e2a7d8e52ad4dd901054c66d62eb5a6eedf68beb88e46b5bd"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex3.html",
+    "path": "assets/239af11bf73c-ex3.html",
+    "sha256": "a260efe8fef2f2f5f006dfa0b7e9848e5d3bac9747eec8100540b95dae2a3489"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex4.html",
+    "path": "assets/843fe0d6a5bd-ex4.html",
+    "sha256": "df1118a2a82d87dd2e7f03914841eeb5601ee217fd02e3f2c7d0ca26143a3379"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex5.html",
+    "path": "assets/febb8114f5d9-ex5.html",
+    "sha256": "3ac1dc71beae19fbf81d86623445b3bb7352908c4ee37da9cfa2886a255aa5fd"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex6.html",
+    "path": "assets/fb71467afd1e-ex6.html",
+    "sha256": "0419b0daaa41bb1755121270180e5d288ad17115e9750e3391d4fa32da9f4a01"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex7.html",
+    "path": "assets/8885b8616717-ex7.html",
+    "sha256": "4299e699f242bc07900145bf6b487885cc1bbe1d1b42d4bcdc4eb8a009ca1fa3"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-00/ex8.html",
+    "path": "assets/cbca90fe83ca-ex8.html",
+    "sha256": "562f6fe4c535c523384f2cf69c8d7e50a0c5970baeaf76ea44c087e8472399f2"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0101.html",
+    "path": "assets/267d8a2d75aa-0101.html",
+    "sha256": "7807c499f707360ed76d49c1b62eb1ace10a3dabc3c20d200847bf663a5e638d"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0102.html",
+    "path": "assets/0f908eea0f60-0102.html",
+    "sha256": "c856dee2af58e807984e5b1fcd315b83a7a601e4baccb7ea297b74041e01fe26"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0103.html",
+    "path": "assets/4eeddab5fd11-0103.html",
+    "sha256": "f8d7144f4400357d8619a8ce72a2f4bf292efe04ae5cc1b28ae15295ba9c9436"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0104.html",
+    "path": "assets/c3a3a1954391-0104.html",
+    "sha256": "67dd708be7fb6188065ee188ca1542483047c37ea5ae2c1f2d4d2cc8f8b96b62"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0105.html",
+    "path": "assets/f8f624e96cfe-0105.html",
+    "sha256": "3db69b4120f53f0217bd8d7b184ef2494c8ccad2f87e5dee7a0d523a1dd716c7"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0106.html",
+    "path": "assets/1a11052ae258-0106.html",
+    "sha256": "8236cae17ffac190d00daebd7ded4385faf915ee0f7ed9e55c7fde413d643c26"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0107.html",
+    "path": "assets/dc7729859c2f-0107.html",
+    "sha256": "a44e0853a5bacb636d24a73df4df90adf75929df839800d72dd2e1d921fc37a9"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/0108.html",
+    "path": "assets/c71110ece8b3-0108.html",
+    "sha256": "0ec752f85c4d382f0c8a106883e891456cb95f2771adffb00c7a601aa22b066e"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/animation-1a.mp4",
+    "path": "assets/0eba1b90d78e-animation-1a.mp4",
+    "sha256": "a614eea93973af5877aeb657db955d4409d05217e69054ad1804417b644435ac"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-01/animation-1b.mp4",
+    "path": "assets/e839d5420fbb-animation-1b.mp4",
+    "sha256": "3c2d258e85c0d6d0cfd0dbd755577c87476d745ceacdd0e809a23476f279a6e4"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-02/0201.html",
+    "path": "assets/d7bba60905dc-0201.html",
+    "sha256": "0f1471c1cf930dbe065733029bf5bc83012c255cec85d7a303b1560142b5bcea"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-02/0202-table.html",
+    "path": "assets/11d238edfbe1-0202-table.html",
+    "sha256": "39e664377ff727322362e9702129dcae1a28358725a67c054548fdc8a1129fbd"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-02/0202.html",
+    "path": "assets/c77ddbf4e40b-0202.html",
+    "sha256": "7459d635ba1fd7af92ea23d371e963224101b333ff7b1e057c4fd7880736aee1"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-02/0203.html",
+    "path": "assets/77a467e3e8ab-0203.html",
+    "sha256": "b8745d13323e764e8f3218c2a77d9fa13cfdc0b6743af024e94d24781deb0d33"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-02/0204.html",
+    "path": "assets/506fd736a920-0204.html",
+    "sha256": "e8f1ff33b03eb0d5653862687c6282150b503df52fd2db395a0e8336f019072d"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0301.html",
+    "path": "assets/0a4d699e3bc4-0301.html",
+    "sha256": "0723eeedc2eb21ddb875fb8f1365ae4e2e341227bc08a42bed4bbc61525e7910"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0302.html",
+    "path": "assets/cc19061a3361-0302.html",
+    "sha256": "260583f7ec54ba7d4e722c80c8ce3a69d729629257a00706a0a0243bc53258c4"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0303.html",
+    "path": "assets/cfe9bc9e4239-0303.html",
+    "sha256": "b2caec1eb2b49017bd17ab2e6d65d341c52772120aea3d775f165ac84b9572cf"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0304-points.html",
+    "path": "assets/a30e44cab372-0304-points.html",
+    "sha256": "f1cfa688e1afc67a0b3e3865ae34809c076ffaca4b39c42163798bf42f690869"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0304.html",
+    "path": "assets/93fc547d668c-0304.html",
+    "sha256": "e1036217f9096633034c17855f3d172b699db4704647a5a6ff0e831cffc81f46"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0305-points.html",
+    "path": "assets/8dc2a30da900-0305-points.html",
+    "sha256": "7ba9952e88a3f5684d34a84350c4de789d3b8e1d10d72498061945c3ce447a84"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0305.html",
+    "path": "assets/e5007beea968-0305.html",
+    "sha256": "25adfef83fa4b2a2b2d01d1d9c9a80a8a44fe0ec82f66085d1129ea7a7faadb9"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0306-A.html",
+    "path": "assets/d9ddbe08dff1-0306-A.html",
+    "sha256": "be6f137e8cdac28d98de11506ff039fed1f4ef49562f8a43c29ff25e50320497"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0306.html",
+    "path": "assets/55d8b1af0160-0306.html",
+    "sha256": "80f69c2cd7e8e4c12f971a809741ca68e1dc71bfe9920544aa2d9adac82a1cf9"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0307-A.html",
+    "path": "assets/49d541244853-0307-A.html",
+    "sha256": "c731c7edde735a840f3d2514fb481fd9058c209e3c9db158b8e43e1b7dd3b174"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-03/0307-B.html",
+    "path": "assets/f3a45ea713ad-0307-B.html",
+    "sha256": "da1c6cf69467bf28554cef25746b47525aa6799a57d16af15afc149584ca5e64"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-04/0401.html",
+    "path": "assets/cbc19db0cbe9-0401.html",
+    "sha256": "384883e114ded149023e6dfc2a2543c6317f58e9d12a548b133361faa10cd8ad"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-04/0402.html",
+    "path": "assets/e5db2aa9825f-0402.html",
+    "sha256": "35eb89d14ea865632611e4ac2cf0cfeeffbb99c06afede853e4fe7f87d745df7"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0501-A.html",
+    "path": "assets/b99feda1e3f9-0501-A.html",
+    "sha256": "569e81b088c6714bc01f9b5b1e2b66b3fd75d21ac47f64d517c20d473c132056"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0501-B.html",
+    "path": "assets/d53c31e6a5aa-0501-B.html",
+    "sha256": "cda2385e7de4591136f5a8a9a55536a9170a669a670c99a8672bc8b240e8ad01"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0502.html",
+    "path": "assets/be47f285264c-0502.html",
+    "sha256": "e187679c5f372116438633b38d02c15f46979826eee4ca591ec653fd9bc6b333"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0503.html",
+    "path": "assets/e70308323ca9-0503.html",
+    "sha256": "346ddecb25cc97cc5f959361eaa53db13dc7ff3bbaff731ccaa0d2455a9fd0bf"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0504.html",
+    "path": "assets/e14a43e801f3-0504.html",
+    "sha256": "d286d014aed5724efc200eb6e62f422b6f170705ed14dec85e351a7e40aebf33"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0505.html",
+    "path": "assets/8bacd3803b3f-0505.html",
+    "sha256": "08efab6a509f4a37f0cb60d046b603f068128e7e8b9b5c2eff2e1f0e1f2efc9f"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0506.html",
+    "path": "assets/e79f535c55f7-0506.html",
+    "sha256": "212bb23e21b4fcdcc0ef81f298d35dd9c1b9b3f9488054058859f843eff3dbf3"
+  },
+  {
+    "url": "https://info-arena.github.io/ARENA_img/misc/media-05/0507.html",
+    "path": "assets/0a8b91060991-0507.html",
+    "sha256": "9d7c32c094d7c59583135a7d3e05c533bb030ec1d0d136431a3c2739d701f482"
+  },
+  {
+    "url": "https://lh3.googleusercontent.com/jpF1jPI7VGb9ssE-Lzn58nB_d4CQlZItqxhFFU_ZLTL3bv_x_82WVmgyIHQRDyemS7Ne5zpj4-rGVRkpACfR_u7Cw8DTGrMr8H_Sm7w74k03gfcJ2nkAwyk2CElLhMonZ6nhQiirM43DP40BIw1Id0k",
+    "path": "assets/dd7f04a78d3d-jpF1jPI7VGb9ssE-Lzn58nB_d4CQlZItqxhFFU_ZLTL3bv_x_82WVmgyIHQRDyemS7Ne5zpj4-rGVRkpACfR_u7Cw8DTGrMr8H_S.png",
+    "sha256": "0eafbf15cac1c514955cf7fabc4795e3cb2fe263c4b99effde7b138932dd760b"
+  },
+  {
+    "url": "https://lh3.googleusercontent.com/lc5-ykchkkSylhM77XrLuCzfthg8bEtdUTV5EUcArilVKPlh9NZQDWkVnp55s35HftZAWdmyVmh3h5g83HtkOscn1g7x4wS5JO8s4mujPV8N2RbBqoCKiY0K_lVRJgVj7zuSyqPV4SIkbsjaWUQkqJY",
+    "path": "assets/f564e97eaf28-lc5-ykchkkSylhM77XrLuCzfthg8bEtdUTV5EUcArilVKPlh9NZQDWkVnp55s35HftZAWdmyVmh3h5g83HtkOscn1g7x4wS5JO8s.png",
+    "sha256": "9dcca5b5ca0815e43fc14f8acec007232f263a34a32f9668ee77a9031f328616"
+  },
+  {
+    "url": "https://miro.medium.com/v2/resize:fit:1400/1*ciDgQEjViWLnCbmX-EeSrA.gif",
+    "path": "assets/aee75ae981f9-1_ciDgQEjViWLnCbmX-EeSrA.gif",
+    "sha256": "2174679b235acf7a8cf79986eaadd95b6340659ce8e1ebf7bc68027670acefe6"
+  },
+  {
+    "url": "https://miro.medium.com/v2/resize:fit:640/format:webp/1*uoWYsCV5vBU8SHFPAPao-w.gif",
+    "path": "assets/35fc2affd537-1_uoWYsCV5vBU8SHFPAPao-w.gif",
+    "sha256": "392ac878be17c90f99dd673a5324bb0f626079e9259e2dd90d1504bbc56bbbdc"
+  },
+  {
+    "url": "https://pbs.twimg.com/media/GZELa2YbUAAqbW6?format=jpg&name=large",
+    "path": "assets/aabb579bbced-GZELa2YbUAAqbW6.jpg",
+    "sha256": "59aae039326af88c49f043bf9ade44c4e9d6f166a32a6d8240ebfb34dd21a786"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/ARENA-education/ARENA_materials/refs/heads/main/chapter0_fundamentals/exercises/part2_cnns/resnet_inputs/chimpanzee.jpg",
+    "path": "assets/2066d6d2c600-chimpanzee.jpg",
+    "sha256": "db0611c2191522936f4dad9d2c516f45f70eaf1b89ac4d540b5484b6444fa4af"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/callummcdougall/Fundamentals/main/images/abcdefg.png",
+    "path": "assets/c9a13c09c260-abcdefg.png",
+    "sha256": "4a9bdb3e2546e4dc3906cf5e4aeb5cab270bd218a4bf6fe3ee887333df3b7d4b"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/callummcdougall/Fundamentals/main/images/grid_vs_random.png",
+    "path": "assets/5eda4a7ef69f-grid_vs_random.png",
+    "sha256": "b6ab4e34858a63220e54626f31c473b1d9af49b8f35ab4e940cf9b1636ca3b3d"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/callummcdougall/Fundamentals/main/images/x_log_out.png",
+    "path": "assets/744cd19947c8-x_log_out.png",
+    "sha256": "bcbba4a573457b1b7f2fbdd4cf1fb48953bf268c54d972a5a0dbd1a2329f8a84"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/img/abc_ef_L.png",
+    "path": "assets/55ea3267d7e1-abc_ef_L.png",
+    "sha256": "5f6bff10bb6f6c569b7a5029dbe79846f789c24c2ce30487fc0bee28c5be6064"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ae-before-after-fixed.png",
+    "path": "assets/51b21f093891-ae-before-after-fixed.png",
+    "sha256": "6eea08c1ad2b32bb9a1e2951e74dfe4c2280268f9dd9b292d7f9e5de88bbecca"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ae-epoch-1.png",
+    "path": "assets/a70ba8a3f93f-ae-epoch-1.png",
+    "sha256": "5b89c48b4742902d4deeede04de68109e4dcb68cc455895bff00ee18fa3d1bf5"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ae-epoch-10.png",
+    "path": "assets/105efc96f480-ae-epoch-10.png",
+    "sha256": "415a5dc91578ab83ad59ff224306469c369b68a53ee0e294afd46afeef6a4027"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/broadcast-last-1.png",
+    "path": "assets/a4128989c420-broadcast-last-1.png",
+    "sha256": "a66d1143c2a2ec7908cd8339a49a3d266fba13c20c2fb08c3be93e05f0d4821c"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/broadcast-last-2.png",
+    "path": "assets/2dd81d34d394-broadcast-last-2.png",
+    "sha256": "eeec88a2cca69574b313307e392e78b74ff1be6cb690262286355e9eb4db6a6f"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/celeb-gans-1.png",
+    "path": "assets/a0041c178dea-celeb-gans-1.png",
+    "sha256": "3e748c37ba022e8190b3a688331997a9f742c7ee2442ffec509c72719e3c8ce6"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/celeb-gans-2.png",
+    "path": "assets/f9df7d699982-celeb-gans-2.png",
+    "sha256": "7571f636537e0e8c5b3a6f821c7047a8aa00a14be1df2157fc130ff1009231c0"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/celeb-gans-3.png",
+    "path": "assets/7e90d83da045-celeb-gans-3.png",
+    "sha256": "be86b3fd72933066fbcd18068e6c4edee957ff0561f3bf5c920e3e4545f12d18"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv1d-explained.png",
+    "path": "assets/86306847ef5c-ch0-conv1d-explained.png",
+    "sha256": "68a05d5b1c469815066f6c48c7acc374e423022735ad8a1f57d55978521cc318"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv1d-general.png",
+    "path": "assets/1e8ef73843b1-ch0-conv1d-general.png",
+    "sha256": "8dd77cb0f696506edb00773f141144c09d76c10c9bca826febe666aec6bc8270"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv1d-help.png",
+    "path": "assets/62b55ff9dc17-ch0-conv1d-help.png",
+    "sha256": "3c721224c8278af186432915c85f2f6670850b8fa91dd857d8d14dc820db5d3a"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv1d-minimal.png",
+    "path": "assets/1c96da95894d-ch0-conv1d-minimal.png",
+    "sha256": "c27772ed92e1ba6d10c493f35aaa306a137fc22271bfd3bc1b382b5b575ff0c4"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv2d-general.png",
+    "path": "assets/1c22074ce74b-ch0-conv2d-general.png",
+    "sha256": "58726071581d573b0dae1da28920b56c74e43ba51cb9f5826450b6b9fc39dde1"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv2d-minimal-help.png",
+    "path": "assets/3126010c9ed2-ch0-conv2d-minimal-help.png",
+    "sha256": "ec62cb35869c143e2ae2b904da0993525dd8fbcc9dfca31baba42ec958ea616f"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ch0-conv2d-minimal.png",
+    "path": "assets/c8089f067d42-ch0-conv2d-minimal.png",
+    "sha256": "913fb1b07f4df0395c04991b9c921f3793446d0e9ac39a0e85e5b1280e832b5f"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/convtranspose-1.png",
+    "path": "assets/14106201b882-convtranspose-1.png",
+    "sha256": "8c6c0fed5a5bec1dcc9e672a6b8000272875bbec132f65619d8416d70e4160f5"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/convtranspose-2A.png",
+    "path": "assets/43aa83054ec3-convtranspose-2A.png",
+    "sha256": "4b2127529cfe6049b42ca68bd4616a0f507b3b0d9b610cd379e2e12858a5eb75"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/convtranspose-3.png",
+    "path": "assets/a0ff27045d32-convtranspose-3.png",
+    "sha256": "4fb29248f09b21012b2be966fe633c471cb6f597a8c37aafb5f18b6742ebab2b"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/feature_extraction.png",
+    "path": "assets/b8831cddf0d3-feature_extraction.png",
+    "sha256": "12895f5040e16956497efcb8dc1fca610f860f0cbb557b289fea5a2ec4041e34"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan-last-output.png",
+    "path": "assets/34f3b221bb7a-gan-last-output.png",
+    "sha256": "91f4cef8d31a5c0ce78e115b5565ba52220ae1d30b9f421af933a0a4a2de8636"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/ae-diagram-l.png",
+    "path": "assets/e209701dbf87-ae-diagram-l.png",
+    "sha256": "c640eb841b66871ef2e821b0221a5fef0a2b121ea868e9fd417f2fe21a8732af"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/ae-help-10.png",
+    "path": "assets/0e60e4ab0768-ae-help-10.png",
+    "sha256": "c315a6f300631fcf78947b56cf6fa586d288cae37698d80fdcdecd7972469260"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/dcgan-9-solid.png",
+    "path": "assets/07ed7456fc48-dcgan-9-solid.png",
+    "sha256": "184a7860911f37aa12cf9c9e236478c0b7a7463641b71b30b15bf091f42889f6"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/dcgan-d-help-9-solid.png",
+    "path": "assets/19d07515a27a-dcgan-d-help-9-solid.png",
+    "sha256": "e49942955b993e8a29588fd79950a8ef947f5cbe88fc7e4959772f1d6cbcfd2f"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/dcgan-g-help-10-light.png",
+    "path": "assets/308ae69f8d42-dcgan-g-help-10-light.png",
+    "sha256": "c5569bdc999c3747b588bbbae26f221c71ba9e268c2c44a61b99c9c245107b5c"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gan-fid-after.png",
+    "path": "assets/fa5e03ee38e0-gan-fid-after.png",
+    "sha256": "25e87c300bffeb72528e3a89c882e439833f0002ddd35b4b87c44af727ad728d"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gan-fid-before.png",
+    "path": "assets/44eb00e84262-gan-fid-before.png",
+    "sha256": "2b6f519c1468800b762f39a1c6ae954a7ff9d44a5e9e42e71e89939664779f98"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gan_output_2.png",
+    "path": "assets/a1d7743ebe50-gan_output_2.png",
+    "sha256": "3f9642f9a11d1f26918da1fbc8ff69ad651f4380b44eac44bba6b400a9820954"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gen_2x4_celeba_15825.png",
+    "path": "assets/ffc3a51246ce-gen_2x4_celeba_15825.png",
+    "sha256": "7b96d9fb9b5234bce3894fa5dedf6dd72e758e9873c817a335e68510b67a61bd"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gen_2x4_celeba_2000.png",
+    "path": "assets/8f4efb0960ed-gen_2x4_celeba_2000.png",
+    "sha256": "a4bede7a5828590636b19eab861512546a80043e63e058dc3ccd4158ebc47662"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gen_2x4_celeba_250.png",
+    "path": "assets/a87ce6ae4f91-gen_2x4_celeba_250.png",
+    "sha256": "59d6a5a8ef9f6080100309f5b2b849cce97305882b4a70ca6d35114cde35c477"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gen_2x4_mnist_2000.png",
+    "path": "assets/8e36726de0d8-gen_2x4_mnist_2000.png",
+    "sha256": "75ca02a416120966d7d38bf25a44e9d7dd9d7d0fc81d97c00dc8658e187b7d7c"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gen_2x4_mnist_250.png",
+    "path": "assets/7ce227a1a743-gen_2x4_mnist_250.png",
+    "sha256": "7edaa33c82b107786f24e84e6be4de5ea074744df2e42285608a7e584d517e74"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/gen_2x4_mnist_9360.png",
+    "path": "assets/25f68fcf549d-gen_2x4_mnist_9360.png",
+    "sha256": "3be71227f41040f2da51f9ce50f7771bc121620780d19a51e0dbd94fd6b970b7"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/vae-graphical.png",
+    "path": "assets/0e8e917b3f9b-vae-graphical.png",
+    "sha256": "b7c00037a2f3e2e36504849e8ec1e0573c9a10973490ca396cafacb5528ad787"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/vae-reparam-l.png",
+    "path": "assets/41300df53a35-vae-reparam-l.png",
+    "sha256": "e5ef57170f0a234719f2fc5460fd183206a6078656c66e9505acc859fbe6d363"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/gan_images/vae_latent_space.webp",
+    "path": "assets/2016a601b8f2-vae_latent_space.webp",
+    "sha256": "c66cf3a81040a56a4280f63f2e5fa62efde5fed32febeb3fde359ce4489a82d9"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/headers/header-00.png",
+    "path": "assets/bbec5ff2f3e1-header-00.png",
+    "sha256": "c66ba7f336b64e2345093e60b3eddea4b4da39cde5cc8982cbb2b30f18543816"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/headers/header-01.png",
+    "path": "assets/a3e10e8d6c78-header-01.png",
+    "sha256": "900ef968b64540d214c6568e68e82a4dff3db027c59171e4192e463031929572"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/headers/header-02.png",
+    "path": "assets/480f414fc3fb-header-02.png",
+    "sha256": "ef58f25d2338c4e8fc17e1bcdffeb84c040080099c9d2724772d1d7c7c819408"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/headers/header-03.png",
+    "path": "assets/3fac37ff971e-header-03.png",
+    "sha256": "1123199a1297761d06a0f66169d4d9f7c1f6e61e247823a087ace3ae58f96c31"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/headers/header-04.png",
+    "path": "assets/2f44b5beb46a-header-04.png",
+    "sha256": "049b2ad77b107738eeb21e6bc71aa3592bda8974dcd9ecefea5567480f8bfc2a"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/headers/header-05.png",
+    "path": "assets/428fbae05464-header-05.png",
+    "sha256": "0e363d1f2f4fc7bc9024dbfc9ef83f31a78ba072ca2bb2b521b9dcbf4213693b"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/is_leaf.png",
+    "path": "assets/a95cb0dbd104-is_leaf.png",
+    "sha256": "d7da75d7486b683956a88323f118ef02d5c9219a4ded87b5fe3d5d229a5b9057"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/mlp-mermaid.svg",
+    "path": "assets/a9c3f57ba211-mlp-mermaid.svg",
+    "sha256": "3ef26deaa08ed7467cbabf4da718037559e3a1a9ec1e7a2d838889c5c976d020"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/mnist-gans-1.png",
+    "path": "assets/7f9a9bfb4c60-mnist-gans-1.png",
+    "sha256": "76e766bdd7738beddc4184127f500fd2e174924a44b26d4aa4c51ba0da69513c"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/mnist-gans-2.png",
+    "path": "assets/ca11bac28a1d-mnist-gans-2.png",
+    "sha256": "569e707a0d543f3c94c4d55d3cc35c351aebc90329ac87cdc96c8bc9788c3d7c"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/mnist-gans-3.png",
+    "path": "assets/299137d30638-mnist-gans-3.png",
+    "sha256": "5701c424e9525ae8842e0b9c334141bbd1591ce199e08371ce0fc407f828d4c8"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/mnist-gans-nan.png",
+    "path": "assets/8e73d6c44d00-mnist-gans-nan.png",
+    "sha256": "8cd96f6fc45084be8b0642055537d20ffcef3be7327039cc56441365de94606b"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/parallelism.png",
+    "path": "assets/784812c4fab9-parallelism.png",
+    "sha256": "ca7c4a8e3e7d2c2b5233495d7e617abd3f003746afa69a7f4258c869cf83d4fe"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/ray_tracing.png",
+    "path": "assets/c3f4a29bd374-ray_tracing.png",
+    "sha256": "5bce520a0ab7f9966df839203bc25e888eb12f992ea1b1a50d120ee1c24a0769"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/raytracing-lighting-2.png",
+    "path": "assets/3ff8c9fb3838-raytracing-lighting-2.png",
+    "sha256": "dede8a5f35ca872c32d12f0ae50248b05662e7dfb4a4d325ec9fc0f79f42e762"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/recipe-v2.png",
+    "path": "assets/f6f59a1b2b3e-recipe-v2.png",
+    "sha256": "0ba4e36ffb045f1ac438287213487ab2351cc56e130a86a96d433560e440196b"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/resnet-fixed.svg",
+    "path": "assets/78a571e7c179-resnet-fixed.svg",
+    "sha256": "2c8e0971284afd41dae77c803f0604a09948f6d47c3eb7e83eed601609457edb"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/row-diff.png",
+    "path": "assets/01e33233991b-row-diff.png",
+    "sha256": "bea3d0b3b3ee5b318ff2e58096df0d106773b91fafb8334ac800f0f7bf9cbc72"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/strides3c.png",
+    "path": "assets/0683d4d1a2b7-strides3c.png",
+    "sha256": "22d0b040a16f90c9b7edd766e68a36373765c31e9017debb8722f7cf9277e232"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/vae-and-hvae-final.png",
+    "path": "assets/ec427e070908-vae-and-hvae-final.png",
+    "sha256": "0ab52d7b0b4215b0fa9010354194327456969a780d5dd9ff7c68e177c93b21f1"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/vae-scatter-one.png",
+    "path": "assets/ef0f9bbbc406-vae-scatter-one.png",
+    "sha256": "db45433db58c0389f46365af7b328ccc7500925b14d108a0e7843a44d1ae72f2"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/vae-scatter-two.png",
+    "path": "assets/17d08c4a8dbe-vae-scatter-two.png",
+    "sha256": "f0c5981570a25c48d867e0326259b476e95e0057262c1cec29b21f06f3055577"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/wandb-day3-smoothed.png",
+    "path": "assets/2e580408a531-wandb-day3-smoothed.png",
+    "sha256": "d91ff41ee9b090931d57848d6da95da1555f55e0fc43be51339e24abbf59083a"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/main/misc/wandb-day3.png",
+    "path": "assets/fabec946ddc2-wandb-day3.png",
+    "sha256": "86ff1971ef205929986311552b9f30ac5f0474d536ea599d81672e5c5998aeb5"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/info-arena/ARENA_img/refs/heads/main/img/Screenshot%25202023-02-17%2520174308.png",
+    "path": "assets/9bd832cd0f68-Screenshot_202023-02-17_20174308.png",
+    "sha256": "e24467f84858fe253043e48808050c4a2dd94b98826047dda9d2aa0e3ee1d6da"
+  }
+]

@@ -13,7 +13,7 @@
 '0.1':
   gpu: optional
   gpu_peak_gib: 3.6
-  gpu_note: "Video & lighting cells need CUDA."
+  gpu_note: "Video & lighting also run on MPS/CPU; reduce resolution for smaller Macs."
   runtime: {gpu_min: 2.2, cpu: ~3 min (CUDA cells skipped)}
   colab: {status: works}
   download_gb: 0.0
@@ -63,7 +63,7 @@
   keys:
   - name: "Weights & Biases"
     required: false
-    for: "logging (`use_wandb=True` by default; set it to `False` to skip)"
+    for: "optional logging (`use_wandb=False` by default)"
 
 0.5.2:
   gpu: recommended

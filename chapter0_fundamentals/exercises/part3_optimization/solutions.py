@@ -2,6 +2,9 @@
 
 
 import os
+
+os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+
 import sys
 import time
 from dataclasses import dataclass
@@ -24,7 +27,8 @@ from tqdm.auto import tqdm
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part3_optimization"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -42,6 +46,10 @@ from plotly_utils import bar, imshow, line
 # Cap the number of CPU threads PyTorch uses. On machines with many cores the default of one
 # thread per core makes small CPU tensor operations much slower
 t.set_num_threads(min(4, t.get_num_threads()))
+
+# Optional services and multi-GPU exercises are opt-in on a local Mac.
+RUN_WANDB_SWEEPS = os.environ.get("ARENA_RUN_WANDB_SWEEPS") == "1"
+RUN_DISTRIBUTED = os.environ.get("ARENA_RUN_DISTRIBUTED") == "1" and t.cuda.device_count() >= 2
 
 device = t.device("mps" if t.backends.mps.is_available() else "cuda" if t.cuda.is_available() else "cpu")
 t.backends.cudnn.benchmark = True  # pick the fastest conv algorithms for our fixed batch shapes (the ResNet fine-tunes)
@@ -781,22 +789,24 @@ def train():
 
 
 if MAIN:
-    sweep_id = wandb.sweep(sweep=sweep_config, project="day3-resnet-sweep")
-    wandb.agent(sweep_id=sweep_id, function=train, count=3)
-    wandb.finish()
+    if RUN_WANDB_SWEEPS:
+        sweep_id = wandb.sweep(sweep=sweep_config, project="day3-resnet-sweep")
+        wandb.agent(sweep_id=sweep_id, function=train, count=3)
+        wandb.finish()
 
 # %%
 
 if MAIN:
-    IN_COLAB = "google.colab" in sys.modules
-    assert not IN_COLAB, "Should be doing these exercises in VS Code"
+    if RUN_DISTRIBUTED:
+        IN_COLAB = "google.colab" in sys.modules
+        assert not IN_COLAB, "Should be doing these exercises in VS Code"
 
 # %%
 
 WORLD_SIZE = min(t.cuda.device_count(), 3)
 
-os.environ["MASTER_ADDR"] = "localhost"
-os.environ["MASTER_PORT"] = "12345"
+os.environ.setdefault("MASTER_ADDR", "localhost")
+os.environ.setdefault("MASTER_PORT", "12345")
 
 
 def send_receive(rank, world_size):
@@ -818,19 +828,21 @@ def send_receive(rank, world_size):
 
 
 if MAIN:
-    world_size = 2  # simulate 2 processes
-    mp.spawn(
-        send_receive,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2  # simulate 2 processes
+        mp.spawn(
+            send_receive,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # %%
 
 if MAIN:
-    assert t.cuda.is_available()
-    assert t.cuda.device_count() > 1, "This example requires at least 2 GPUs per machine"
+    if RUN_DISTRIBUTED:
+        assert t.cuda.is_available()
+        assert t.cuda.device_count() > 1, "This example requires at least 2 GPUs per machine"
 
 # %%
 
@@ -855,13 +867,14 @@ def send_receive_nccl(rank, world_size):
 
 
 if MAIN:
-    world_size = 2  # simulate 2 processes
-    mp.spawn(
-        send_receive_nccl,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2  # simulate 2 processes
+        mp.spawn(
+            send_receive_nccl,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # %%
 
@@ -880,7 +893,8 @@ def broadcast(tensor: Tensor, rank: int, world_size: int, src: int = 0):
 
 
 if MAIN:
-    tests.test_broadcast(broadcast, WORLD_SIZE)
+    if RUN_DISTRIBUTED:
+        tests.test_broadcast(broadcast, WORLD_SIZE)
 
 # %%
 
@@ -910,8 +924,9 @@ def all_reduce(tensor, rank, world_size, op: Literal["sum", "mean"] = "sum"):
 
 
 if MAIN:
-    tests.test_reduce(reduce, WORLD_SIZE)
-    tests.test_all_reduce(all_reduce, WORLD_SIZE)
+    if RUN_DISTRIBUTED:
+        tests.test_reduce(reduce, WORLD_SIZE)
+        tests.test_all_reduce(all_reduce, WORLD_SIZE)
 
 # %%
 
@@ -947,13 +962,14 @@ def run_simple_model(rank, world_size):
 
 
 if MAIN:
-    world_size = 2
-    mp.spawn(
-        run_simple_model,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2
+        mp.spawn(
+            run_simple_model,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # %%
 
@@ -1108,13 +1124,14 @@ def dist_train_resnet_from_scratch(rank, world_size):
 
 
 if MAIN:
-    world_size = t.cuda.device_count()
-    mp.spawn(
-        dist_train_resnet_from_scratch,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = t.cuda.device_count()
+        mp.spawn(
+            dist_train_resnet_from_scratch,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # %%
 
@@ -1140,13 +1157,14 @@ def run(rank: int, world_size: int):
 
 
 if MAIN:
-    world_size = 2
-    mp.spawn(
-        run,
-        args=(world_size,),
-        nprocs=world_size,
-        join=True,
-    )
+    if RUN_DISTRIBUTED:
+        world_size = 2
+        mp.spawn(
+            run,
+            args=(world_size,),
+            nprocs=world_size,
+            join=True,
+        )
 
 # %%
 
@@ -1202,6 +1220,7 @@ def ring_all_reduce(tensor: Tensor, rank, world_size, op: Literal["sum", "mean"]
 
 
 if MAIN:
-    tests.test_all_reduce(ring_all_reduce, WORLD_SIZE)
+    if RUN_DISTRIBUTED:
+        tests.test_all_reduce(ring_all_reduce, WORLD_SIZE)
 
 # %%

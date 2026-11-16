@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import plotly.graph_objects as go
 import torch as t
-from datasets import load_dataset
+from fundamentals_utils import load_chapter_dataset
 from einops import repeat
 from plotly.subplots import make_subplots
 from torch.utils.data import DataLoader, TensorDataset
@@ -13,7 +13,7 @@ Arr = np.ndarray
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part4_backprop"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+root_dir = Path(__file__).resolve().parents[3]
 exercises_dir = root_dir / chapter / "exercises"
 
 
@@ -37,7 +37,7 @@ def visualize(dataloader, filename: str | None = None):
 
     fig.show(config={"displayModeBar": False})
     if filename is not None:
-        fig.write_html(filename, config={"displayModeBar": False}, include_plotlyjs="cdn")
+        fig.write_html(filename, config={"displayModeBar": False}, include_plotlyjs=True)
 
 
 def get_mnist(subsample: int | None = None) -> tuple[DataLoader, DataLoader]:
@@ -48,7 +48,7 @@ def get_mnist(subsample: int | None = None) -> tuple[DataLoader, DataLoader]:
     """
     if subsample is None:
         subsample = 1
-    mnist = load_dataset("ylecun/mnist").with_format("numpy")
+    mnist = load_chapter_dataset("ylecun/mnist").with_format("numpy")
 
     def to_tensor_dataset(split: str) -> TensorDataset:
         data = mnist[split][::subsample]

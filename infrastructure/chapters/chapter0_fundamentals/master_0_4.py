@@ -121,48 +121,34 @@ ipython.run_line_magic("autoreload", "2")
 # ! FILTERS: [colab]
 # ! TAGS: [master-comment]
 
+# # Native local setup: run `uv sync --locked` once from the repository root.
+# # Select the "ARENA chapter 0 (uv)" kernel; this cell never installs or downloads.
 # import os
 # import sys
 # from pathlib import Path
-
-# IN_COLAB = "google.colab" in sys.modules
-
+#
+# os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+# os.environ.setdefault("WANDB_MODE", "offline")
 # chapter = "chapter0_fundamentals"
-# repo = "ARENA_materials"
-# branch = "main"
-
-# # Install dependencies
-# try:
-#     import jaxtyping
-# except:
-#     %pip install einops jaxtyping
-
-# # Get root directory, handling 3 different cases: (1) Colab, (2) notebook not in ARENA repo, (3) notebook in ARENA repo
-# root = (
-#     "/content"
-#     if IN_COLAB
-#     else "/root"
-#     if repo not in os.getcwd()
-#     else str(next(p for p in Path.cwd().parents if p.name == repo))
+# root_dir = next(
+#     (p for p in (Path.cwd(), *Path.cwd().parents) if (p / chapter / "exercises").is_dir()),
+#     None,
 # )
-
-# if Path(root).exists() and not Path(f"{root}/{chapter}").exists():
-#     if not IN_COLAB:
-#         !sudo apt-get install unzip
-#         %pip install jupyter ipython --upgrade
-
-#     if not os.path.exists(f"{root}/{chapter}"):
-#         !wget -P {root} https://github.com/ARENA-education/ARENA_materials/archive/refs/heads/{branch}.zip
-#         !unzip {root}/{branch}.zip '{repo}-{branch}/{chapter}/exercises/*' -d {root}
-#         !mv {root}/{repo}-{branch}/{chapter} {root}/{chapter}
-#         !rm {root}/{branch}.zip
-#         !rmdir {root}/{repo}-{branch}
-
-
-# if f"{root}/{chapter}/exercises" not in sys.path:
-#     sys.path.append(f"{root}/{chapter}/exercises")
-
-# os.chdir(f"{root}/{chapter}/exercises")
+# if root_dir is None:
+#     raise RuntimeError(
+#         "Open this notebook inside the cloned ARENA repository. See chapter0_fundamentals/README.md."
+#     )
+# exercises_dir = root_dir / chapter / "exercises"
+# os.environ.setdefault("HF_HOME", str(exercises_dir / "data/huggingface"))
+# os.environ.setdefault("TORCH_HOME", str(exercises_dir / "data/torch"))
+# if str(exercises_dir) not in sys.path:
+#     sys.path.insert(0, str(exercises_dir))
+# os.chdir(exercises_dir)
+#
+# # Include Plotly's JavaScript locally; figures also work without a CDN connection.
+# import plotly.io as pio
+#
+# pio.renderers.default = "plotly_mimetype+notebook"
 
 # ! CELL TYPE: code
 # ! FILTERS: []
@@ -186,7 +172,8 @@ grad_tracking_enabled = True
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part4_backprop"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -3609,4 +3596,43 @@ r'''
 
 So far we've registered a separate backwards for each input argument that could be a Tensor. This is problematic if the function can take any number of tensors like `torch.stack` or `numpy.stack`. Think of and implement the backward function for stack. It may require modification to your other code.
 '''
+
+# ! CELL TYPE: code
+# ! FILTERS: [py]
+# ! TAGS: []
+
+# Imported reference solutions need the final operation registry; demos remain under MAIN.
+if not MAIN:
+    BACK_FUNCS = BackwardFuncLookup()
+    log = wrap_forward_fn(np.log)
+    multiply = wrap_forward_fn(np.multiply)
+    eq = wrap_forward_fn(np.equal, is_differentiable=False)
+    sum = wrap_forward_fn(_sum)
+    negative = wrap_forward_fn(np.negative)
+    exp = wrap_forward_fn(np.exp)
+    reshape = wrap_forward_fn(np.reshape)
+    permute = wrap_forward_fn(np.transpose)
+    getitem = wrap_forward_fn(_getitem)
+    argmax = wrap_forward_fn(_argmax, is_differentiable=False)
+    maximum = wrap_forward_fn(np.maximum)
+    matmul = wrap_forward_fn(_matmul2d)
+    BACK_FUNCS.add_back_func(np.log, 0, log_back)
+    BACK_FUNCS.add_back_func(np.multiply, 0, multiply_back0)
+    BACK_FUNCS.add_back_func(np.multiply, 1, multiply_back1)
+    BACK_FUNCS.add_back_func(np.negative, 0, negative_back)
+    BACK_FUNCS.add_back_func(np.exp, 0, exp_back)
+    BACK_FUNCS.add_back_func(np.reshape, 0, reshape_back)
+    BACK_FUNCS.add_back_func(np.transpose, 0, permute_back)
+    BACK_FUNCS.add_back_func(_sum, 0, sum_back)
+    BACK_FUNCS.add_back_func(np.add, 0, lambda grad_out, out, x, y: unbroadcast(grad_out, x))
+    BACK_FUNCS.add_back_func(np.add, 1, lambda grad_out, out, x, y: unbroadcast(grad_out, y))
+    BACK_FUNCS.add_back_func(np.subtract, 0, lambda grad_out, out, x, y: unbroadcast(grad_out, x))
+    BACK_FUNCS.add_back_func(np.subtract, 1, lambda grad_out, out, x, y: unbroadcast(-grad_out, y))
+    BACK_FUNCS.add_back_func(np.true_divide, 0, lambda grad_out, out, x, y: unbroadcast(grad_out / y, x))
+    BACK_FUNCS.add_back_func(np.true_divide, 1, lambda grad_out, out, x, y: unbroadcast(grad_out * (-x / y**2), y))
+    BACK_FUNCS.add_back_func(_getitem, 0, getitem_back)
+    BACK_FUNCS.add_back_func(np.maximum, 0, maximum_back0)
+    BACK_FUNCS.add_back_func(np.maximum, 1, maximum_back1)
+    BACK_FUNCS.add_back_func(_matmul2d, 0, matmul2d_back0)
+    BACK_FUNCS.add_back_func(_matmul2d, 1, matmul2d_back1)
 

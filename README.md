@@ -4,19 +4,23 @@
 
 # Install Instructions
 
-1) Clone the repo
+## Native macOS: chapter 0
+
+```sh
+git clone https://github.com/MO-DadhichiT-42760/ARENA_materials.git
+cd ARENA_materials
+bash install_uv.sh --chapter 0
+uv run --locked python scripts/prepare_chapter0.py
+uv run --locked jupyter lab
 ```
-git clone https://github.com/ARENA-education/ARENA_materials.git
-```
-2) Run the install script. `install_uv.sh` uses [uv](https://docs.astral.sh/uv/) and creates the environment at `ARENA_materials/.venv`:
-```
-bash ARENA_materials/install_uv.sh
-```
-The same script works on your own Mac, or on Windows under Git Bash: it detects the OS, skips the apt step, and leaves your shell config alone (pass `--platform local` to get this on a Linux machine of your own). CUDA-only packages (CUDA jax, liger-kernel) are swapped out there, so GPU-heavy sections run slower or need a cloud GPU. On macOS, the Atari bonus section's `envpool` also needs `brew install qt@5`.
-If that fails, fall back to the conda-based script:
-```
-bash ARENA_materials/install.sh
-```
+
+Select the **ARENA chapter 0 (uv)** kernel. On macOS the installer defaults to chapter 0, using Python 3.12 and the checked-in uv lockfile. Notebook images and interactive plots are local; the preparation command caches the core datasets and ResNet weights for offline use. Conda is not needed.
+
+See [chapter 0's macOS guide](chapter0_fundamentals/README.md) for restricted-network use, testing, Apple GPU support and optional sections.
+
+## Existing full-course / cloud setup
+
+The remaining chapters still use the original broad requirements, including GPU-specific packages. To install that environment with uv, run `bash install_uv.sh --chapter all` (or add `--platform local` on your own Linux machine). That path is separate from the chapter 0 macOS project and has not been validated as part of this port.
 
 This GitHub repo hosts the exercises and Streamlit pages for the ARENA program.
 

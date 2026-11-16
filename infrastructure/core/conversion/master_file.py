@@ -169,6 +169,23 @@ class MasterFileData:
         for filename, content in files.items():
             if (path := self.chapter_dir / filename).exists() and not overwrite:
                 raise FileExistsError(f"File {path} already exists")
+            if self.chapter_dir.name == "chapter0_fundamentals" and path.suffix == ".ipynb":
+                # Localize from the manifest after generation, so master URLs retain attribution.
+                import runpy
+                asset_tools = runpy.run_path(str(self.chapter_dir.parent / "scripts/chapter0_assets.py"))
+                if path.suffix == ".ipynb":
+                    notebook = json.loads(content)
+                    for cell in notebook["cells"]:
+                        if cell["cell_type"] != "code":
+                            cell.pop("execution_count", None)
+                            cell.pop("outputs", None)
+                        cell["source"] = asset_tools["localize_text"](
+                            "".join(cell["source"]), path.parent
+                        ).splitlines(keepends=True)
+                    notebook["metadata"]["kernelspec"] = {
+                        "display_name": "ARENA chapter 0 (uv)", "language": "python", "name": "arena-chapter0"
+                    }
+                    content = json.dumps(notebook)
             path.write_text(content, encoding="utf-8")
             if path.suffix == ".py":
                 all_py_paths.append(path)

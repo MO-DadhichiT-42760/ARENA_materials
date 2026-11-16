@@ -19,7 +19,8 @@ grad_tracking_enabled = True
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part4_backprop"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -1176,5 +1177,42 @@ if MAIN:
         title="MLP training on MNIST from scratch",
         width=800,
     )
+
+# %%
+
+# Imported reference solutions need the final operation registry; demos remain under MAIN.
+if not MAIN:
+    BACK_FUNCS = BackwardFuncLookup()
+    log = wrap_forward_fn(np.log)
+    multiply = wrap_forward_fn(np.multiply)
+    eq = wrap_forward_fn(np.equal, is_differentiable=False)
+    sum = wrap_forward_fn(_sum)
+    negative = wrap_forward_fn(np.negative)
+    exp = wrap_forward_fn(np.exp)
+    reshape = wrap_forward_fn(np.reshape)
+    permute = wrap_forward_fn(np.transpose)
+    getitem = wrap_forward_fn(_getitem)
+    argmax = wrap_forward_fn(_argmax, is_differentiable=False)
+    maximum = wrap_forward_fn(np.maximum)
+    matmul = wrap_forward_fn(_matmul2d)
+    BACK_FUNCS.add_back_func(np.log, 0, log_back)
+    BACK_FUNCS.add_back_func(np.multiply, 0, multiply_back0)
+    BACK_FUNCS.add_back_func(np.multiply, 1, multiply_back1)
+    BACK_FUNCS.add_back_func(np.negative, 0, negative_back)
+    BACK_FUNCS.add_back_func(np.exp, 0, exp_back)
+    BACK_FUNCS.add_back_func(np.reshape, 0, reshape_back)
+    BACK_FUNCS.add_back_func(np.transpose, 0, permute_back)
+    BACK_FUNCS.add_back_func(_sum, 0, sum_back)
+    BACK_FUNCS.add_back_func(np.add, 0, lambda grad_out, out, x, y: unbroadcast(grad_out, x))
+    BACK_FUNCS.add_back_func(np.add, 1, lambda grad_out, out, x, y: unbroadcast(grad_out, y))
+    BACK_FUNCS.add_back_func(np.subtract, 0, lambda grad_out, out, x, y: unbroadcast(grad_out, x))
+    BACK_FUNCS.add_back_func(np.subtract, 1, lambda grad_out, out, x, y: unbroadcast(-grad_out, y))
+    BACK_FUNCS.add_back_func(np.true_divide, 0, lambda grad_out, out, x, y: unbroadcast(grad_out / y, x))
+    BACK_FUNCS.add_back_func(np.true_divide, 1, lambda grad_out, out, x, y: unbroadcast(grad_out * (-x / y**2), y))
+    BACK_FUNCS.add_back_func(_getitem, 0, getitem_back)
+    BACK_FUNCS.add_back_func(np.maximum, 0, maximum_back0)
+    BACK_FUNCS.add_back_func(np.maximum, 1, maximum_back1)
+    BACK_FUNCS.add_back_func(_matmul2d, 0, matmul2d_back0)
+    BACK_FUNCS.add_back_func(_matmul2d, 1, matmul2d_back1)
 
 # %%

@@ -2,12 +2,14 @@
 set -e
 
 # =============================================================================
-# Fast install using uv (https://docs.astral.sh/uv/). If this fails, fall back to install.sh (conda + pip).
+# Install using uv (https://docs.astral.sh/uv/). macOS defaults to the locked chapter 0 project.
+# Use --chapter all for the legacy full-course requirements.txt environment.
 # First clone the ARENA_materials repo and move into it:
 #   git clone https://github.com/ARENA-education/ARENA_materials.git
 #   cd ARENA_materials
 # Then, from inside the ARENA_materials folder, run:
-#   ./install_uv.sh                     # RunPod (default on Linux)
+#   ./install_uv.sh                     # macOS: chapter 0; Linux: full course on RunPod
+#   ./install_uv.sh --chapter 0          # locked native macOS chapter 0 environment
 #   ./install_uv.sh --platform vastai   # Vast.ai platform
 #   ./install_uv.sh --platform local    # Your own machine (default on macOS, and on Windows under Git Bash)
 # Safe to re-run: if a run is interrupted, running the same command again repairs the partial install.
@@ -30,11 +32,19 @@ esac
 if [[ "$OS" == "linux" ]]; then PLATFORM="runpod"; else PLATFORM="local"; fi
 PYTHON_VERSION="3.13"
 KERNEL_NAME="arena-env"
+# Native Macs install only the chapter being ported; cloud installs retain the full course.
+if [[ "$OS" == "macos" ]]; then CHAPTER="0"; else CHAPTER="all"; fi
 
 # Parse args
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --chapter)
+            [[ $# -ge 2 ]] || { echo "--chapter requires 0 or all"; exit 1; }
+            CHAPTER="$2"
+            shift 2
+            ;;
         --platform)
+            [[ $# -ge 2 ]] || { echo "--platform requires a value"; exit 1; }
             PLATFORM="$2"
             shift 2
             ;;
@@ -45,6 +55,11 @@ done
 case "$PLATFORM" in
     runpod|vastai|local) ;;
     *) echo "Unknown platform: $PLATFORM (expected runpod, vastai or local)"; exit 1 ;;
+esac
+
+case "$CHAPTER" in
+    0|all) ;;
+    *) echo "Unknown chapter: $CHAPTER (expected 0 or all)"; exit 1 ;;
 esac
 
 # The repo this script lives in, wherever it was cloned
@@ -89,6 +104,19 @@ if ! command -v uv &> /dev/null; then
     fi
 fi
 echo "=== Using $(uv --version) ==="
+
+# Chapter 0 has a reproducible, macOS-specific project and does not install the CUDA course stack.
+if [[ "$CHAPTER" == "0" ]]; then
+    if [[ "$OS" != "macos" ]]; then
+        echo "The chapter 0 uv project currently targets macOS. Use --chapter all for the legacy full-course environment."
+        exit 1
+    fi
+    uv sync --project "$REPO_DIR" --locked
+    uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/setup_chapter0.py"
+    uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/chapter0_assets.py" --check
+    echo "=== Chapter 0 ready. From $REPO_DIR, run: uv run --locked jupyter lab ==="
+    exit 0
+fi
 
 # --- Create the venv and install Python deps ---
 # uv downloads a standalone Python if the machine doesn't have this version. --seed adds pip to the

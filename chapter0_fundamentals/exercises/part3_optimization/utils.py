@@ -121,7 +121,7 @@ def plot_fn(
     fig.update_yaxes(range=y_range)
 
     if filename is not None:
-        fig.write_html(filename, config=CONFIG, include_plotlyjs="cdn")
+        fig.write_html(filename, config=CONFIG, include_plotlyjs=True)
     elif return_fig:
         return fig
     else:
@@ -182,7 +182,7 @@ def plot_fn_with_points(
         )
 
     if filename is not None:
-        fig.write_html(filename, config=CONFIG, include_plotlyjs="cdn")
+        fig.write_html(filename, config=CONFIG, include_plotlyjs=True)
         fig.show(config=CONFIG)
     elif return_fig:
         return fig

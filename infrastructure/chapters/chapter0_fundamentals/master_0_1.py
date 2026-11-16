@@ -121,61 +121,43 @@ ipython.run_line_magic("autoreload", "2")
 # ! FILTERS: [colab]
 # ! TAGS: [master-comment]
 
+# # Native local setup: run `uv sync --locked` once from the repository root.
+# # Select the "ARENA chapter 0 (uv)" kernel; this cell never installs or downloads.
 # import os
 # import sys
 # from pathlib import Path
-
-# IN_COLAB = "google.colab" in sys.modules
-
+#
+# os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+# os.environ.setdefault("WANDB_MODE", "offline")
 # chapter = "chapter0_fundamentals"
-# repo = "ARENA_materials"
-# branch = "main"
-
-# # Install dependencies
-# try:
-#     import jaxtyping
-# except:
-#     %pip install jaxtyping einops
-
-# # `go.FigureWidget` (used in the interactive plots below) needs anywidget, which plotly doesn't
-# # install for you
-# try:
-#     import anywidget
-# except:
-#     %pip install anywidget
-
-# # Get root directory, handling 3 different cases: (1) Colab, (2) notebook not in ARENA repo, (3) notebook in ARENA repo
-# root = (
-#     "/content"
-#     if IN_COLAB
-#     else "/root"
-#     if repo not in os.getcwd()
-#     else str(next(p for p in Path.cwd().parents if p.name == repo))
+# root_dir = next(
+#     (p for p in (Path.cwd(), *Path.cwd().parents) if (p / chapter / "exercises").is_dir()),
+#     None,
 # )
-
-# if Path(root).exists() and not Path(f"{root}/{chapter}").exists():
-#     if not IN_COLAB:
-#         !sudo apt-get install unzip
-#         %pip install jupyter ipython --upgrade
-
-#     if not os.path.exists(f"{root}/{chapter}"):
-#         !wget -P {root} https://github.com/ARENA-education/ARENA_materials/archive/refs/heads/{branch}.zip
-#         !unzip {root}/{branch}.zip '{repo}-{branch}/{chapter}/exercises/*' -d {root}
-#         !mv {root}/{repo}-{branch}/{chapter} {root}/{chapter}
-#         !rm {root}/{branch}.zip
-#         !rmdir {root}/{repo}-{branch}
-
-
-# if f"{root}/{chapter}/exercises" not in sys.path:
-#     sys.path.append(f"{root}/{chapter}/exercises")
-
-# os.chdir(f"{root}/{chapter}/exercises")
+# if root_dir is None:
+#     raise RuntimeError(
+#         "Open this notebook inside the cloned ARENA repository. See chapter0_fundamentals/README.md."
+#     )
+# exercises_dir = root_dir / chapter / "exercises"
+# os.environ.setdefault("HF_HOME", str(exercises_dir / "data/huggingface"))
+# os.environ.setdefault("TORCH_HOME", str(exercises_dir / "data/torch"))
+# if str(exercises_dir) not in sys.path:
+#     sys.path.insert(0, str(exercises_dir))
+# os.chdir(exercises_dir)
+#
+# # Include Plotly's JavaScript locally; figures also work without a CDN connection.
+# import plotly.io as pio
+#
+# pio.renderers.default = "plotly_mimetype+notebook"
 
 # ! CELL TYPE: code
 # ! FILTERS: []
 # ! TAGS: []
 
 import os
+
+os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+
 import sys
 from functools import partial
 from pathlib import Path
@@ -194,7 +176,8 @@ from tqdm.auto import tqdm
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part1_ray_tracing"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -1564,7 +1547,8 @@ def raytrace_mesh_video(
         # counterclockwise. That just reverses the direction of the spin, which doesn't matter here.
         triangles = triangles @ R
         result.append(raytrace_function(rays, triangles))
-        t.cuda.empty_cache()  # clears GPU memory (this line will be more important later on!)
+        if t.cuda.is_available():
+            t.cuda.empty_cache()
     return t.stack(result, dim=0)
 
 
@@ -1862,7 +1846,7 @@ if MAIN:
 # ! TAGS: [html,st-dropdown[Click to see the expected output]]
 
 r'''
-<div style="text-align: left"><embed src="https://info-arena.github.io/ARENA_img/misc/media-01/0108-v2.html" width="570" height="620"></div>
+<div style="text-align: left"><embed src="https://info-arena.github.io/ARENA_img/misc/media-01/0108.html" width="570" height="620"></div>
 '''
 
 # ! CELL TYPE: markdown

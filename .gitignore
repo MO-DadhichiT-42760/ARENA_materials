@@ -100,3 +100,7 @@ chapter2_rl/exercises/part42_rlvr/adapters/
 
 # Local copy of the course website, cloned by infrastructure/core/scripts/preview_site.sh
 infrastructure/website/
+
+# Local notebook execution reports and kernels
+/work/
+.ipynb_checkpoints/

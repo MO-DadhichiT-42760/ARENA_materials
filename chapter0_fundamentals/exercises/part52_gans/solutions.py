@@ -2,6 +2,9 @@
 
 
 import os
+
+os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -23,7 +26,8 @@ from tqdm.auto import tqdm
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part52_gans"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -35,11 +39,16 @@ from part52_gans import tests
 from fundamentals_utils import TANH_RANGE_TRANSFORM, LiveImage, display_data, get_dataset
 from plotly_utils import imshow
 
+# Cache optional face data / FID weights with scripts/prepare_chapter0.py before enabling.
+RUN_CELEBA = os.environ.get("ARENA_RUN_CELEBA") == "1"
+RUN_FID = os.environ.get("ARENA_RUN_FID") == "1"
+
 device = t.device("mps" if t.backends.mps.is_available() else "cuda" if t.cuda.is_available() else "cpu")
 
 # Colab only gives you 2 CPU cores, and asking a DataLoader for more workers than that can hang it
 # at the first batch rather than merely slowing it down. Elsewhere we can afford the throughput.
-NUM_WORKERS = 2 if "google.colab" in sys.modules else min(8, os.cpu_count())
+# macOS uses spawn; notebook-defined datasets cannot be pickled by worker processes.
+NUM_WORKERS = 0 if sys.platform == "darwin" else 2 if "google.colab" in sys.modules else min(8, os.cpu_count() or 1)
 
 # On machines with many cores the default of one thread per core makes small CPU tensor operations much slower
 t.set_num_threads(min(4, t.get_num_threads()))
@@ -47,9 +56,10 @@ t.set_num_threads(min(4, t.get_num_threads()))
 # %%
 
 if MAIN:
-    trainset_celeb = get_dataset("CELEB")
-    x = next(iter(DataLoader(trainset_celeb, batch_size=25)))[0]
-    display_data(trainset_celeb.transform(x), nrows=5, title="CelebA data")
+    if RUN_CELEBA:
+        trainset_celeb = get_dataset("CELEB")
+        x = next(iter(DataLoader(trainset_celeb, batch_size=25)))[0]
+        display_data(trainset_celeb.transform(x), nrows=5, title="CelebA data")
 
 # %%
 
@@ -452,19 +462,20 @@ class DCGANTrainer:
 # %%
 
 if MAIN:
-    # Arguments for CelebA
-    args = DCGANArgs(
-        dataset="CELEB",
-        hidden_channels=[128, 256, 512],
-        batch_size=64,  # if you get OOM errors, reduce this!
-        epochs=5,
-        lr_D=8e-4,  # separate LRs for generator and discriminator
-        lr_G=2e-4,
-        use_wandb=False,
-        compile=False, # toggle me once you have the bugs ironed out
-    )
-    trainer = DCGANTrainer(args)
-    dcgan_celeb = trainer.train()
+    if RUN_CELEBA:
+        # Arguments for CelebA
+        args = DCGANArgs(
+            dataset="CELEB",
+            hidden_channels=[128, 256, 512],
+            batch_size=64,  # if you get OOM errors, reduce this!
+            epochs=5,
+            lr_D=8e-4,  # separate LRs for generator and discriminator
+            lr_G=2e-4,
+            use_wandb=False,
+            compile=False, # toggle me once you have the bugs ironed out
+        )
+        trainer = DCGANTrainer(args)
+        dcgan_celeb = trainer.train()
 
 # %%
 
@@ -484,47 +495,48 @@ if MAIN:
 # %%
 
 if MAIN:
-    try:
-        import torch_fidelity  # noqa: F401 (torchmetrics needs it for FID, but only imports it when you construct one)
-        from torchmetrics.image.fid import FrechetInceptionDistance
+    if RUN_FID and RUN_CELEBA:
+        try:
+            import torch_fidelity  # noqa: F401 (torchmetrics needs it for FID, but only imports it when you construct one)
+            from torchmetrics.image.fid import FrechetInceptionDistance
     
-        fid_available = True
-    except ImportError as e:
-        print(f"{e}\nComputing FID needs torchmetrics with its image extras. You can install them with: pip install \"torchmetrics[image]\"")
-        fid_available = False
+            fid_available = True
+        except ImportError as e:
+            print(f"{e}\nComputing FID needs torchmetrics with its image extras. You can install them with: pip install \"torchmetrics[image]\"")
+            fid_available = False
     
-    trainset_celeb = get_dataset("CELEB")
-    
-    
-    @t.inference_mode()
-    def compute_fid(netG: nn.Module, dataset, n_samples: int = 2000, batch_size: int = 200) -> float:
-        """FID between `n_samples` generated images and the same number of real ones from `dataset`."""
-        fid = FrechetInceptionDistance(feature=2048, normalize=True).to(device)
-    
-        def prep(imgs: Tensor) -> Tensor:
-            """[-1, 1] and maybe greyscale -> 3-channel [0, 1], which is what torchmetrics expects."""
-            imgs = (imgs.clamp(-1, 1) + 1) / 2
-            return imgs.expand(-1, 3, -1, -1) if imgs.shape[1] == 1 else imgs
-    
-        # real images, transformed the same way the model saw them during training (stop once we have
-        # enough - don't iterate the whole dataset, CelebA is 200k images)
-        seen = 0
-        for imgs, _ in DataLoader(dataset, batch_size=batch_size, shuffle=True):
-            fid.update(prep(dataset.transform(imgs.to(device))), real=True)
-            seen += imgs.shape[0]
-            if seen >= n_samples:
-                break
-    
-        netG.eval()
-        for i in range(0, n_samples, batch_size):
-            noise = t.randn(min(batch_size, n_samples - i), netG.latent_dim_size, device=device)
-            fid.update(prep(netG(noise)), real=False)
-        netG.train()
-    
-        return fid.compute().item()
+        trainset_celeb = get_dataset("CELEB")
     
     
-    if fid_available:
-        print(f"FID of your trained generator: {compute_fid(dcgan_celeb.netG, trainset_celeb):.2f}")
+        @t.inference_mode()
+        def compute_fid(netG: nn.Module, dataset, n_samples: int = 2000, batch_size: int = 200) -> float:
+            """FID between `n_samples` generated images and the same number of real ones from `dataset`."""
+            fid = FrechetInceptionDistance(feature=2048, normalize=True).to(device)
+    
+            def prep(imgs: Tensor) -> Tensor:
+                """[-1, 1] and maybe greyscale -> 3-channel [0, 1], which is what torchmetrics expects."""
+                imgs = (imgs.clamp(-1, 1) + 1) / 2
+                return imgs.expand(-1, 3, -1, -1) if imgs.shape[1] == 1 else imgs
+    
+            # real images, transformed the same way the model saw them during training (stop once we have
+            # enough - don't iterate the whole dataset, CelebA is 200k images)
+            seen = 0
+            for imgs, _ in DataLoader(dataset, batch_size=batch_size, shuffle=True):
+                fid.update(prep(dataset.transform(imgs.to(device))), real=True)
+                seen += imgs.shape[0]
+                if seen >= n_samples:
+                    break
+    
+            netG.eval()
+            for i in range(0, n_samples, batch_size):
+                noise = t.randn(min(batch_size, n_samples - i), netG.latent_dim_size, device=device)
+                fid.update(prep(netG(noise)), real=False)
+            netG.train()
+    
+            return fid.compute().item()
+    
+    
+        if fid_available:
+            print(f"FID of your trained generator: {compute_fid(dcgan_celeb.netG, trainset_celeb):.2f}")
 
 # %%

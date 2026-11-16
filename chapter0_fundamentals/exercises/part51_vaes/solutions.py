@@ -2,6 +2,9 @@
 
 
 import os
+
+os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
+
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -23,7 +26,8 @@ from tqdm.auto import tqdm
 # Make sure exercises are in the path
 chapter = "chapter0_fundamentals"
 section = "part51_vaes"
-root_dir = next(p for p in Path.cwd().parents if (p / chapter).exists())
+search_dir = Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()
+root_dir = next(p for p in (search_dir, *search_dir.parents) if (p / chapter / "exercises").is_dir())
 exercises_dir = root_dir / chapter / "exercises"
 section_dir = exercises_dir / section
 if str(exercises_dir) not in sys.path:
@@ -124,7 +128,7 @@ class AutoencoderArgs:
     betas: tuple[float, float] = (0.5, 0.999)
 
     # logging
-    use_wandb: bool = True
+    use_wandb: bool = False
     wandb_project: str | None = "day5-autoencoder"
     wandb_name: str | None = None
     log_every_n_steps: int = 250
