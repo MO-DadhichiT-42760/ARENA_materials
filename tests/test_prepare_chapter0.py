@@ -1,5 +1,6 @@
 """Check CLI TLS initialization in fresh processes, without external downloads."""
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -65,3 +66,44 @@ except DownloadsReached:
 else:
     raise AssertionError("No download clients imported")
 ''')
+
+
+HUB_MODE_CHECK = """
+import sys
+import scripts.prepare_chapter0 as prepare
+
+def record(*args, **kwargs):
+    # Library config is read at import time, so check what the clients actually loaded.
+    import datasets.config
+    import huggingface_hub.constants
+    print("HUB_OFFLINE", datasets.config.HF_HUB_OFFLINE, huggingface_hub.constants.HF_HUB_OFFLINE)
+
+prepare.prepare_core = record
+prepare.prepare_weights = lambda *a, **k: None
+prepare.prepare_celeba = lambda *a, **k: None
+prepare.main(sys.argv[1:])
+"""
+
+
+def hub_mode(*args, **env):
+    clean = {k: v for k, v in os.environ.items() if not k.startswith("HF_")}
+    result = subprocess.run(
+        [sys.executable, "-c", HUB_MODE_CHECK, *args],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+        env={**clean, **env},
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    return result.stdout
+
+
+def test_core_preparation_keeps_hugging_face_clients_offline():
+    # Even an explicit HF_HUB_OFFLINE=0 on another machine must not let core setup reach the Hub.
+    assert "HUB_OFFLINE True True" in hub_mode(HF_HUB_OFFLINE="0", HF_DATASETS_OFFLINE="0")
+
+
+def test_celeba_preparation_may_use_the_hub():
+    assert "HUB_OFFLINE False False" in hub_mode("--celeba")

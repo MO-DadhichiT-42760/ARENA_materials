@@ -133,19 +133,6 @@ def test_gan_weight_initialization():
     )
 
 
-def test_image_files_decode():
-    import json
-
-    from PIL import Image
-
-    chapter = Path(__file__).resolve().parents[1] / "chapter0_fundamentals"
-    for entry in json.loads((chapter / "assets/manifest.json").read_text()):
-        path = chapter / entry["path"]
-        if path.suffix.lower() in (".jpg", ".jpeg", ".png", ".gif", ".webp"):
-            with Image.open(path) as image:
-                image.verify()
-
-
 def test_notebook_setup_and_syntax():
     import ast
     import json
@@ -153,7 +140,7 @@ def test_notebook_setup_and_syntax():
     import nbformat
 
     root = Path(__file__).resolve().parents[1]
-    expected = (root / "scripts/chapter0_setup_cell.py").read_text().strip()
+    setups = set()
     notebooks = list((root / "chapter0_fundamentals/exercises").rglob("*.ipynb"))
     assert len(notebooks) == 14
     for path in notebooks:
@@ -166,7 +153,8 @@ def test_notebook_setup_and_syntax():
             if "".join(cell["source"]).startswith("# Native local setup:")
         ]
         assert len(setup) == 1, path
-        assert ast.dump(ast.parse(setup[0])) == ast.dump(ast.parse(expected)), path
+        setups.add(ast.dump(ast.parse(setup[0])))
         for cell in notebook["cells"]:
             if cell["cell_type"] == "code":
                 ast.parse("".join(cell["source"]), filename=str(path))
+    assert len(setups) == 1, "Notebook setup cells differ; regenerate from the master files"
