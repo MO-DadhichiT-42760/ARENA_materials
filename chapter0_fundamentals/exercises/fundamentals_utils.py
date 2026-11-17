@@ -34,12 +34,19 @@ def load_chapter_dataset(name: str, split: str | None = None):
     """Prefer the portable snapshot prepared by scripts/prepare_chapter0.py.
 
     Snapshots load directly from Arrow files, without contacting HuggingFace.
-    The original online path remains available when the snapshot isn't present.
+    Missing core snapshots produce setup instructions instead of attempting hidden Hub downloads.
+    Only the optional CelebA dataset may use the original online path.
     """
     local = LOCAL_DATA / "datasets" / HF_DATASETS[name]
     if local.is_dir():
         data = load_from_disk(str(local))
         return data if split is None else data[split]
+    if name in ("ylecun/mnist", "uoft-cs/cifar10"):
+        raise FileNotFoundError(
+            f"The local {HF_DATASETS[name]} snapshot is missing. From the repository root, "
+            "run `uv run --locked python scripts/prepare_chapter0.py`, then rerun this cell. "
+            "Core preparation does not require Hugging Face access or a login."
+        )
     return load_dataset(name, **({} if split is None else {"split": split}))
 
 
@@ -91,8 +98,8 @@ TANH_RANGE_TRANSFORM = transforms.Compose(
 
 class HFImageDataset(Dataset):
     """
-    Base class for the image datasets used in this chapter, all of which are loaded from HuggingFace (and so are
-    cached under $HF_HOME, rather than downloaded into this repo).
+    Base class for the image datasets used in this chapter. MNIST and CIFAR-10 come from portable local snapshots
+    built during setup; optional CelebA uses a prepared snapshot or the Hugging Face cache.
 
     The images are kept as raw uint8, and a `DataLoader` over this dataset yields uint8 batches of shape
     `(batch, channels, height, width)`. The float preprocessing is deliberately *not* applied here - it lives in the
@@ -168,8 +175,8 @@ class HFImageDataset(Dataset):
 
 class CIFAR10(HFImageDataset):
     """
-    CIFAR-10, wrapped to look like `torchvision.datasets.CIFAR10`. We load it from HuggingFace because torchvision's
-    own download source is throttled to ~80 kB/s (GitHub issue #359).
+    CIFAR-10, wrapped to look like `torchvision.datasets.CIFAR10`. Setup prepares a portable local snapshot,
+    so notebook use makes no requests to Hugging Face or the original download server.
 
     `.data` is a uint8 array of shape (n, 32, 32, 3), `.targets` a list of ints, `.classes` the class names, and
     indexing gives `(image, label)`.
@@ -186,7 +193,7 @@ class CIFAR10(HFImageDataset):
 
 
 class MNIST(HFImageDataset):
-    """MNIST, loaded from HuggingFace. `.data` is a uint8 array of shape (n, 28, 28), `.targets` a list of ints."""
+    """MNIST, loaded from the local snapshot prepared during setup. `.data` is a uint8 array of shape (n, 28, 28), `.targets` a list of ints."""
 
     hf_path = "ylecun/mnist"
     label_key = "label"

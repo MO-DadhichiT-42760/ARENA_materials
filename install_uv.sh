@@ -9,7 +9,8 @@ set -e
 #   cd ARENA_materials
 # Then, from inside the ARENA_materials folder, run:
 #   ./install_uv.sh                     # macOS: chapter 0; Linux: full course on RunPod
-#   ./install_uv.sh --chapter 0          # locked native macOS chapter 0 environment
+#   ./install_uv.sh --chapter 0          # locked native macOS environment and core data
+#   ./install_uv.sh --chapter 0 --skip-data  # environment only (e.g. when transferring a cache)
 #   ./install_uv.sh --platform vastai   # Vast.ai platform
 #   ./install_uv.sh --platform local    # Your own machine (default on macOS, and on Windows under Git Bash)
 # Safe to re-run: if a run is interrupted, running the same command again repairs the partial install.
@@ -32,12 +33,14 @@ esac
 if [[ "$OS" == "linux" ]]; then PLATFORM="runpod"; else PLATFORM="local"; fi
 PYTHON_VERSION="3.13"
 KERNEL_NAME="arena-env"
+SKIP_DATA=false
 # Native Macs install only the chapter being ported; cloud installs retain the full course.
 if [[ "$OS" == "macos" ]]; then CHAPTER="0"; else CHAPTER="all"; fi
 
 # Parse args
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --skip-data) SKIP_DATA=true; shift ;;
         --chapter)
             [[ $# -ge 2 ]] || { echo "--chapter requires 0 or all"; exit 1; }
             CHAPTER="$2"
@@ -114,7 +117,12 @@ if [[ "$CHAPTER" == "0" ]]; then
     uv sync --project "$REPO_DIR" --locked
     uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/setup_chapter0.py"
     uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/chapter0_assets.py" --check
-    echo "=== Chapter 0 ready. From $REPO_DIR, run: uv run --locked jupyter lab ==="
+    if [[ "$SKIP_DATA" == false ]]; then
+        uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/prepare_chapter0.py"
+        echo "=== Chapter 0 ready. From $REPO_DIR, run: uv run --locked jupyter lab ==="
+    else
+        echo "=== Environment ready. Prepare core data before training: uv run --locked python scripts/prepare_chapter0.py ==="
+    fi
     exit 0
 fi
 

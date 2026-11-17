@@ -496,7 +496,7 @@ r'''
 
 Virtual environments are a common way to manage dependencies when working across multiple different projects and are standard practice in all professional development contexts. During ARENA, we expect that participants will be working inside likely one, but possibly more environments. 
 
-This fork uses [uv](https://docs.astral.sh/uv/) for native macOS chapter 0. Run `bash install_uv.sh --chapter 0` from the repository root, then `uv run --locked python scripts/prepare_chapter0.py` to cache the core data and pretrained weights. Start Jupyter with `uv run --locked jupyter lab` and select **ARENA chapter 0 (uv)**. The Python version and dependencies are pinned in `.python-version` and `uv.lock`; see `chapter0_fundamentals/README.md` for the complete local setup. Conda is not required.
+This fork uses [uv](https://docs.astral.sh/uv/) for native macOS chapter 0. Run `bash install_uv.sh --chapter 0` from the repository root. It installs the locked environment and prepares the core datasets and pretrained weights automatically, without requiring Hugging Face access or a login. Start Jupyter with `uv run --locked jupyter lab` and select **ARENA chapter 0 (uv)**. The Python version and dependencies are pinned in `.python-version` and `uv.lock`; see `chapter0_fundamentals/README.md` for the complete local setup. Conda is not required.
 '''
 
 # ! CELL TYPE: markdown

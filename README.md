@@ -10,11 +10,10 @@
 git clone https://github.com/MO-DadhichiT-42760/ARENA_materials.git
 cd ARENA_materials
 bash install_uv.sh --chapter 0
-uv run --locked python scripts/prepare_chapter0.py
 uv run --locked jupyter lab
 ```
 
-Select the **ARENA chapter 0 (uv)** kernel. On macOS the installer defaults to chapter 0, using Python 3.12 and the checked-in uv lockfile. Notebook images and interactive plots are local; the preparation command caches the core datasets and ResNet weights for offline use. Conda is not needed.
+Select the **ARENA chapter 0 (uv)** kernel. On macOS the installer defaults to chapter 0, using Python 3.12 and the checked-in uv lockfile. Notebook images and interactive plots are local; the installer caches the core datasets and ResNet weights for offline use, using public downloads that do not require Hugging Face access. Conda is not needed.
 
 See [chapter 0's macOS guide](chapter0_fundamentals/README.md) for restricted-network use, testing, Apple GPU support and optional sections.
 
