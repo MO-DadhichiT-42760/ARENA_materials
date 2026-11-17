@@ -319,26 +319,23 @@ def prepare_celeba(data_dir: Path, verify_only=False):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--data-dir",
-        type=Path,
-        help="Prepare a portable data/model cache here (copy to exercises/data for notebook use)",
-    )
-    parser.add_argument(
         "--verify-only", action="store_true", help="Check local core resources without downloading"
     )
     parser.add_argument("--celeba", action="store_true")
     parser.add_argument("--fid", action="store_true")
     args = parser.parse_args(argv)
-    data_dir = (args.data_dir or DATA).expanduser().resolve()
-    if args.data_dir:
-        os.environ["HF_HOME"] = str(data_dir / "huggingface")
-        os.environ["TORCH_HOME"] = str(data_dir / "torch")
-    else:
-        os.environ.setdefault("HF_HOME", str(data_dir / "huggingface"))
-        os.environ.setdefault("TORCH_HOME", str(data_dir / "torch"))
+    data_dir = DATA
+    os.environ.setdefault("HF_HOME", str(data_dir / "huggingface"))
+    os.environ.setdefault("TORCH_HOME", str(data_dir / "torch"))
     # Configure before importing clients; native Xet does not use Python's SSLContext.
     os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
     os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
+    if not args.celeba:
+        # Core data comes from public mirrors, never the Hub. Offline mode guarantees that no
+        # datasets/huggingface_hub version or inherited HF_* setting can make setup depend on
+        # Hugging Face; it is read at import time, so it must be set before those imports.
+        os.environ["HF_HUB_OFFLINE"] = "1"
+        os.environ["HF_DATASETS_OFFLINE"] = "1"
     import truststore
 
     truststore.inject_into_ssl()

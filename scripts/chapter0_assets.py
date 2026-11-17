@@ -1,6 +1,6 @@
 """Vendor chapter 0 embedded images/plots and keep regenerated notebooks local.
 
-Run --fetch only when adding/updating upstream media; normal use needs no downloads.
+Run --fetch only when adding/updating upstream media, then regenerate the notebooks.
 Source URLs and SHA-256 hashes are retained in the checked-in manifest.
 """
 
@@ -152,20 +152,6 @@ def localize_text(text: str, parent: Path) -> str:
     return IFRAME.sub(video_link, text)
 
 
-def localize_file(path: Path) -> None:
-    old = path.read_text()
-    if path.suffix == ".ipynb":
-        notebook = json.loads(old)
-        for cell in notebook["cells"]:
-            text = "".join(cell["source"])
-            cell["source"] = localize_text(text, path.parent).splitlines(keepends=True)
-        new = json.dumps(notebook)
-    else:
-        new = localize_text(old, path.parent)
-    if old != new:
-        path.write_text(new)
-
-
 def check() -> None:
     entries = read_manifest()
     assert entries, "No asset manifest; run scripts/chapter0_assets.py --fetch"
@@ -193,13 +179,9 @@ def check() -> None:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fetch", action="store_true")
-    parser.add_argument("--localize", action="store_true")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     if args.fetch:
         fetch()
-    if args.localize:
-        for path in (CHAPTER / "exercises").rglob("*.ipynb"):
-            localize_file(path)
     if args.check:
         check()

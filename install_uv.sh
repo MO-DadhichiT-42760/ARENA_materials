@@ -116,7 +116,6 @@ if [[ "$CHAPTER" == "0" ]]; then
     fi
     uv sync --project "$REPO_DIR" --locked
     uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/setup_chapter0.py"
-    uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/chapter0_assets.py" --check
     if [[ "$SKIP_DATA" == false ]]; then
         uv run --project "$REPO_DIR" --locked python "$REPO_DIR/scripts/prepare_chapter0.py"
         echo "=== Chapter 0 ready. From $REPO_DIR, run: uv run --locked jupyter lab ==="
