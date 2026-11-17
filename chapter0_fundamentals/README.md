@@ -13,7 +13,9 @@ bash install_uv.sh --chapter 0
 uv run --locked jupyter lab
 ```
 
-Open a notebook under `chapter0_fundamentals/exercises/` and select **ARENA chapter 0 (uv)**. Start with `part0_prereqs/0.0_Prerequisites_exercises.ipynb`. Keep the notebook inside the checkout; the checkout folder can have any name. The setup cells find the repository by its contents and never install packages or run Linux commands.
+Open a notebook under `chapter0_fundamentals/exercises/` and select **ARENA chapter 0 (uv)**. Start with `part0_prereqs/0.0_Prerequisites_exercises.ipynb`.
+
+**VS Code or Cursor instead of JupyterLab:** open the repository root folder (not `exercises/`), open a notebook, and choose **Select Kernel → Jupyter Kernel… → ARENA chapter 0 (uv)** (or **Python Environments → .venv**; both work, because the first cell sets the Mac-specific environment before importing PyTorch). The installer writes a git-ignored `.vscode/settings.json` that points the editor at `.venv` and lets Pylance resolve imports such as `part0_prereqs.utils`. If you already have that file, it is left untouched and the installer prints the two settings to add. Keep the notebook inside the checkout; the checkout folder can have any name. The setup cells find the repository by its contents and never install packages or run Linux commands.
 
 The installer uses `uv sync --locked`, prepares the core datasets and ResNet34 weights, and registers its kernel inside `.venv`, without modifying your shell or user-wide Jupyter kernels. If you move the checkout, rerun the installer to refresh the kernel's absolute paths. To install only the environment (for example when transferring an offline cache), add `--skip-data`. Before training, run `uv run --locked python scripts/prepare_chapter0.py` or copy an existing `exercises/data/` folder. The installer reports training readiness only after preparation succeeds.
 
